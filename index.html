@@ -3,40 +3,43 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>University Timetable</title>
+    <title>Dental RENAD</title>
     <style>
       :root {
         --bg1: #f7f0ff;
         --bg2: #efe1ff;
-        --purple-900: #3f1d73;
-        --purple-800: #56308b;
-        --purple-700: #6a42a5;
-        --purple-600: #7b4ec9;
-        --purple-500: #8e63d8;
-        --lavender-200: #f1e8ff;
-        --lavender-100: #f8f3ff;
+        --purple-900: #2d1848;
+        --purple-800: #43306d;
+        --purple-700: #5f3d9a;
+        --purple-600: #7c57c8;
+        --purple-500: #8d68dc;
+        --lavender-200: #f0e8ff;
+        --lavender-100: #faf6ff;
         --white: #ffffff;
-        --text: #2d2145;
-        --muted: #6d5d86;
+        --text: #2c2340;
+        --muted: #655b7a;
         --border: rgba(92, 58, 145, 0.15);
-        --success: #5fbb7a;
+        --success: #53b884;
         --shadow: 0 16px 42px rgba(92, 58, 145, 0.14);
       }
 
-      * {
-        box-sizing: border-box;
-      }
+      * { box-sizing: border-box; }
 
       html, body {
         margin: 0;
         padding: 0;
-        background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 45%, #e6d8ff 100%);
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 50%, #e9dcff 100%);
         color: var(--text);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       }
 
       body {
         min-height: 100vh;
+      }
+
+      button {
+        font: inherit;
       }
 
       .screen {
@@ -45,9 +48,7 @@
         padding: 32px 18px 48px;
       }
 
-      .screen.active {
-        display: block;
-      }
+      .screen.active { display: block; }
 
       .container {
         max-width: 1120px;
@@ -105,11 +106,7 @@
         box-shadow: 0 10px 26px rgba(87, 57, 145, 0.08);
       }
 
-      .group-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 18px 28px rgba(87, 57, 145, 0.12);
-        border-color: rgba(106, 66, 165, 0.35);
-      }
+      .group-card:hover { transform: translateY(-4px); box-shadow: 0 18px 28px rgba(87, 57, 145, 0.12); }
 
       .group-icon {
         width: 68px;
@@ -119,7 +116,7 @@
         background: linear-gradient(135deg, var(--purple-600), var(--purple-500));
         display: grid;
         place-items: center;
-        color: #fff;
+        color: white;
         font-weight: 800;
         font-size: 1.45rem;
       }
@@ -216,6 +213,41 @@
         font-size: 0.96rem;
       }
 
+      .progress-panel {
+        background: rgba(255,255,255,0.75);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        padding: 22px 24px;
+        margin-bottom: 24px;
+      }
+
+      .progress-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        color: var(--purple-900);
+        margin-bottom: 14px;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 18px;
+        background: #ece1ff;
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        width: 0%;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #8b64d9, #5d3d9b);
+        transition: width 0.25s ease;
+      }
+
       .timetable-wrap {
         margin-top: 18px;
       }
@@ -261,10 +293,6 @@
         text-align: center;
       }
 
-      .course-box {
-        min-width: 0;
-      }
-
       .course-name {
         font-weight: 800;
         color: var(--text);
@@ -291,32 +319,32 @@
         cursor: pointer;
       }
 
+      .lec-item.done .course-name,
+      .lec-item.done .course-meta {
+        opacity: 0.58;
+        text-decoration: line-through;
+      }
+
       @media (max-width: 760px) {
-        .hero-card {
-          padding: 24px 18px;
-        }
+        .hero-card { padding: 24px 18px; }
 
         .lec-item {
           grid-template-columns: 1fr;
           text-align: center;
         }
 
-        .time {
-          width: 100%;
-        }
+        .time { width: 100%; }
       }
     </style>
   </head>
+
   <body>
     <div id="homePage" class="screen active">
       <div class="container">
         <div class="hero-card">
-          <div class="brand">University Planner</div>
+          <div class="brand">Dental RENAD</div>
           <h1>Choose your group</h1>
-          <p class="subtitle">
-            Select your department group and section to view the correct timetable for your week.
-          </p>
-
+          <p class="subtitle">Select your study group and section to view the correct timetable and track completed lectures.</p>
           <div id="groupGrid" class="group-grid"></div>
         </div>
       </div>
@@ -328,7 +356,6 @@
           <h2 id="sectionTitle">Choose a section</h2>
           <button class="secondary-btn" id="backToGroupsBtn">Back</button>
         </div>
-
         <div id="sectionGrid" class="section-grid"></div>
       </div>
     </div>
@@ -343,131 +370,195 @@
           </div>
         </div>
 
+        <div id="progressPanel" class="progress-panel">
+          <div class="progress-head">
+            <span>Lecture progress</span>
+            <span id="progressLabel">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+        </div>
+
         <div id="timetableContainer" class="timetable-wrap"></div>
       </div>
     </div>
 
     <script>
+      const dayOrder = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
+
       const timetableData = {
         A: {
           label: "Group A",
-          general: [
-            { day: "Sunday", time: "09:00 - 11:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lec", room: "Hall 7 (Gov.)" },
-            { day: "Sunday", time: "11:00 - 13:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lab", room: "Hall 7 (Gov.)" },
-            { day: "Sunday", time: "13:00 - 14:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Hall Comp.2" },
-            { day: "Monday", time: "13:00 - 15:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall Comp.1" },
-            { day: "Tuesday", time: "09:00 - 10:00", subject: "Stem Cell Applications in Dentistry", code: "ELD104", type: "Lec", room: "Hall Comp.2" },
-            { day: "Tuesday", time: "10:00 - 11:00", subject: "Laser Applications in Dentistry", code: "ELD105", type: "Lec", room: "Hall 3.01" },
-            { day: "Wednesday", time: "12:00 - 13:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Lec", room: "Hall 3.02" },
-            { day: "Wednesday", time: "13:00 - 14:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.02" },
-            { day: "Wednesday", time: "14:00 - 15:00", subject: "Dental Terminology", code: "DEN113", type: "Lec", room: "Hall 3.01" }
-          ],
           sections: {
             A1: [
-              { day: "Monday", time: "16:00 - 17:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Biomaterial Lab 1", room: "Biomaterial Lab 1" },
-              { day: "Wednesday", time: "09:00 - 10:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.02 (with A3)" },
-              { day: "Wednesday", time: "11:00 - 12:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall 3.01 (with A4)" },
-              { day: "Thursday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab 1" }
+              { day: "Saturday", time: "09:00 - 11:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lec", room: "Hall 7Gov." },
+              { day: "Saturday", time: "11:00 - 01:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lab", room: "Hall 7 Gov." },
+              { day: "Saturday", time: "03:00 - 05:00", subject: "Laser Applications in Dentistry", code: "ELD105", type: "Lec", room: "Hall 3.01" },
+              { day: "Monday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Hall Comp.2" },
+              { day: "Monday", time: "10:00 - 11:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall Comp.1" },
+              { day: "Monday", time: "01:00 - 03:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Lec", room: "Hall 3.02" },
+              { day: "Tuesday", time: "09:00 - 11:00", subject: "Stem Cell Applications in Dentistry", code: "ELD104", type: "Lec", room: "Hall Comp.2" },
+              { day: "Tuesday", time: "01:00 - 03:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Biomaterial Lab 1", room: "Biomaterial Lab 1" },
+              { day: "Wednesday", time: "09:00 - 11:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.02" },
+              { day: "Wednesday", time: "11:00 - 01:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.02" },
+              { day: "Thursday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab 1" },
+              { day: "Thursday", time: "11:00 - 01:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall 3.01" },
+              { day: "Thursday", time: "01:00 - 02:00", subject: "Dental Terminology", code: "DEN113", type: "Lec", room: "Hall 3.01" }
             ],
             A2: [
-              { day: "Monday", time: "15:00 - 16:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab 1" },
-              { day: "Wednesday", time: "10:00 - 11:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Digital Lib. (with A5)" },
-              { day: "Wednesday", time: "15:00 - 16:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.02 (with A4 and A5)" },
-              { day: "Thursday", time: "09:00 - 10:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Biomaterial Lab 1", room: "Biomaterial Lab 1" }
+              { day: "Saturday", time: "09:00 - 11:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lec", room: "Hall 7Gov." },
+              { day: "Saturday", time: "11:00 - 01:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lab", room: "Hall 7 Gov." },
+              { day: "Saturday", time: "03:00 - 05:00", subject: "Laser Applications in Dentistry", code: "ELD105", type: "Lec", room: "Hall 3.01" },
+              { day: "Monday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Hall Comp.2" },
+              { day: "Monday", time: "10:00 - 11:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall Comp.1" },
+              { day: "Monday", time: "01:00 - 03:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Lec", room: "Hall 3.02" },
+              { day: "Tuesday", time: "09:00 - 11:00", subject: "Stem Cell Applications in Dentistry", code: "ELD104", type: "Lec", room: "Hall Comp.2" },
+              { day: "Tuesday", time: "01:00 - 03:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab1" },
+              { day: "Wednesday", time: "09:00 - 11:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.02" },
+              { day: "Wednesday", time: "11:00 - 01:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lab", room: "Digital Lib." },
+              { day: "Thursday", time: "09:00 - 11:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Biomaterial Lab1", room: "Biomaterial Lab1" },
+              { day: "Thursday", time: "01:00 - 02:00", subject: "Dental Terminology", code: "DEN113", type: "Lec", room: "Hall 3.01" }
             ],
             A3: [
-              { day: "Monday", time: "16:00 - 17:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Biomaterial Lab 2", room: "Biomaterial Lab 2" },
-              { day: "Wednesday", time: "09:00 - 10:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.02 (with A1)" },
-              { day: "Wednesday", time: "10:00 - 11:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall 3.01" },
-              { day: "Thursday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab 1" }
+              { day: "Saturday", time: "09:00 - 11:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lec", room: "Hall 7Gov." },
+              { day: "Saturday", time: "11:00 - 01:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lab", room: "Hall 7 Gov." },
+              { day: "Saturday", time: "03:00 - 05:00", subject: "Laser Applications in Dentistry", code: "ELD105", type: "Lec", room: "Hall 3.01" },
+              { day: "Monday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Hall Comp.2" },
+              { day: "Monday", time: "10:00 - 11:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall Comp.1" },
+              { day: "Monday", time: "01:00 - 03:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Lec", room: "Hall 3.02" },
+              { day: "Tuesday", time: "09:00 - 11:00", subject: "Stem Cell Applications in Dentistry", code: "ELD104", type: "Lec", room: "Hall Comp.2" },
+              { day: "Tuesday", time: "01:00 - 03:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Biomaterial Lab 2", room: "Biomaterial Lab 2" },
+              { day: "Wednesday", time: "09:00 - 11:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.02" },
+              { day: "Wednesday", time: "11:00 - 01:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.02" },
+              { day: "Thursday", time: "09:00 - 11:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall 3.01" },
+              { day: "Thursday", time: "11:00 - 01:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab 1" },
+              { day: "Thursday", time: "01:00 - 02:00", subject: "Dental Terminology", code: "DEN113", type: "Lec", room: "Hall 3.01" }
             ],
             A4: [
-              { day: "Monday", time: "15:00 - 16:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Biomaterial Lab 2", room: "Biomaterial Lab 2" },
-              { day: "Wednesday", time: "11:00 - 12:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall 3.01 (with A1)" },
-              { day: "Wednesday", time: "15:00 - 16:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.02 (with A2 and A5)" },
-              { day: "Thursday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab 2" }
+              { day: "Saturday", time: "09:00 - 11:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lec", room: "Hall 7Gov." },
+              { day: "Saturday", time: "11:00 - 01:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lab", room: "Hall 7 Gov." },
+              { day: "Saturday", time: "03:00 - 05:00", subject: "Laser Applications in Dentistry", code: "ELD105", type: "Lec", room: "Hall 3.01" },
+              { day: "Monday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Hall Comp.2" },
+              { day: "Monday", time: "10:00 - 11:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall Comp.1" },
+              { day: "Monday", time: "01:00 - 03:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Lec", room: "Hall 3.02" },
+              { day: "Tuesday", time: "09:00 - 11:00", subject: "Stem Cell Applications in Dentistry", code: "ELD104", type: "Lec", room: "Hall Comp.2" },
+              { day: "Wednesday", time: "09:00 - 11:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.02" },
+              { day: "Wednesday", time: "11:00 - 01:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Dent. Lab 2", room: "Dent. Lab 2" },
+              { day: "Thursday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab 2" },
+              { day: "Thursday", time: "11:00 - 01:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall 3.01" },
+              { day: "Thursday", time: "01:00 - 02:00", subject: "Dental Terminology", code: "DEN113", type: "Lec", room: "Hall 3.01" }
             ],
             A5: [
-              { day: "Monday", time: "16:00 - 17:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Biomaterial Lab 2", room: "Biomaterial Lab 2" },
-              { day: "Wednesday", time: "10:00 - 11:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Digital Lib. (with A2)" },
-              { day: "Wednesday", time: "15:00 - 16:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.02 (with A2 and A4)" },
-              { day: "Thursday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab 2" }
+              { day: "Saturday", time: "09:00 - 11:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lec", room: "Hall 7Gov." },
+              { day: "Saturday", time: "11:00 - 01:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lab", room: "Hall 7 Gov." },
+              { day: "Saturday", time: "03:00 - 05:00", subject: "Laser Applications in Dentistry", code: "ELD105", type: "Lec", room: "Hall 3.01" },
+              { day: "Monday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Hall Comp.2" },
+              { day: "Monday", time: "10:00 - 11:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall Comp.1" },
+              { day: "Monday", time: "01:00 - 03:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Lec", room: "Hall 3.02" },
+              { day: "Tuesday", time: "09:00 - 11:00", subject: "Stem Cell Applications in Dentistry", code: "ELD104", type: "Lec", room: "Hall Comp.2" },
+              { day: "Wednesday", time: "09:00 - 11:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.02" },
+              { day: "Wednesday", time: "11:00 - 01:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lab", room: "Digital Lib." },
+              { day: "Thursday", time: "11:00 - 01:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab 2" },
+              { day: "Thursday", time: "01:00 - 02:00", subject: "Dental Terminology", code: "DEN113", type: "Lec", room: "Hall 3.01" }
             ]
           }
         },
-
         B: {
           label: "Group B",
-          general: [
-            { day: "Saturday", time: "09:00 - 11:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.01" },
-            { day: "Sunday", time: "09:00 - 10:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Lec", room: "Hall Comp.2" },
-            { day: "Sunday", time: "11:00 - 13:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall Comp.1" },
-            { day: "Monday", time: "13:00 - 14:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Hall 3.01" },
-            { day: "Tuesday", time: "10:00 - 11:00", subject: "Stem Cell Applications in Dentistry", code: "ELD104", type: "Lec", room: "Hall 3.02" },
-            { day: "Tuesday", time: "11:00 - 12:00", subject: "Dental Terminology", code: "DEN113", type: "Lec", room: "Hall 3.02" },
-            { day: "Tuesday", time: "12:00 - 13:00", subject: "Laser Applications in Dentistry", code: "ELD105", type: "Lec", room: "Hall 3.01" },
-            { day: "Tuesday", time: "13:00 - 15:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lec", room: "Hall 3.02" },
-            { day: "Tuesday", time: "15:00 - 17:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lab", room: "Hall 3.02" }
-          ],
           sections: {
             B1: [
-              { day: "Saturday", time: "11:00 - 13:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall A3.10 (with B2 and B3)" },
-              { day: "Sunday", time: "10:00 - 11:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Biomaterial Lab 1", room: "Biomaterial Lab 1" },
-              { day: "Monday", time: "14:00 - 15:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Dent. Lab 1" },
-              { day: "Wednesday", time: "11:00 - 12:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Digital Lib. (with B5)" }
+              { day: "Saturday", time: "09:00 - 11:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.01" },
+              { day: "Saturday", time: "11:00 - 01:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall A3.10" },
+              { day: "Saturday", time: "03:00 - 05:00", subject: "Stem Cell Applications in Dentistry", code: "ELD104", type: "Lec", room: "Hall 3.02" },
+              { day: "Sunday", time: "09:00 - 11:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Lec", room: "Hall Comp.2" },
+              { day: "Sunday", time: "11:00 - 01:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Biomaterial Lab 1", room: "Biomaterial Lab 1" },
+              { day: "Sunday", time: "01:00 - 03:00", subject: "Laser Applications in Dentistry", code: "ELD105", type: "Lec", room: "Hall 3.01" },
+              { day: "Monday", time: "09:00 - 10:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall Comp.1" },
+              { day: "Monday", time: "11:00 - 01:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab1" },
+              { day: "Monday", time: "02:00 - 03:00", subject: "Dental Terminology", code: "DEN113", type: "Lec", room: "Hall 3.02" },
+              { day: "Tuesday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Hall 3.01" },
+              { day: "Tuesday", time: "11:00 - 01:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lec", room: "Hall 3.02" },
+              { day: "Tuesday", time: "01:00 - 03:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lab", room: "Hall 3.02" },
+              { day: "Wednesday", time: "01:00 - 03:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lab", room: "Digital Lib." }
             ],
             B2: [
-              { day: "Saturday", time: "11:00 - 13:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall A3.10 (with B1 and B3)" },
-              { day: "Sunday", time: "10:00 - 11:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Biomaterial Lab 2", room: "Biomaterial Lab 2" },
-              { day: "Monday", time: "14:00 - 15:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Biomaterial Lab 2 (with B3)" }
+              { day: "Saturday", time: "09:00 - 11:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.01" },
+              { day: "Saturday", time: "11:00 - 01:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall A3.10" },
+              { day: "Saturday", time: "03:00 - 05:00", subject: "Stem Cell Applications in Dentistry", code: "ELD104", type: "Lec", room: "Hall 3.02" },
+              { day: "Sunday", time: "09:00 - 11:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Lec", room: "Hall Comp.2" },
+              { day: "Sunday", time: "11:00 - 01:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Biomaterial Lab 2", room: "Biomaterial Lab 2" },
+              { day: "Sunday", time: "01:00 - 03:00", subject: "Laser Applications in Dentistry", code: "ELD105", type: "Lec", room: "Hall 3.01" },
+              { day: "Monday", time: "09:00 - 10:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall Comp.1" },
+              { day: "Monday", time: "10:00 - 12:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Biomaterial Lab 2" },
+              { day: "Monday", time: "02:00 - 03:00", subject: "Dental Terminology", code: "DEN113", type: "Lec", room: "Hall 3.02" },
+              { day: "Tuesday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Hall 3.01" },
+              { day: "Tuesday", time: "11:00 - 01:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lec", room: "Hall 3.02" },
+              { day: "Tuesday", time: "01:00 - 03:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lab", room: "Hall 3.02" },
+              { day: "Wednesday", time: "11:00 - 01:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab 1" }
             ],
             B3: [
-              { day: "Saturday", time: "11:00 - 13:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall A3.10 (with B1 and B2)" },
-              { day: "Monday", time: "11:00 - 12:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Dent. Lab 1" },
-              { day: "Monday", time: "14:00 - 15:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Biomaterial Lab 2 (with B2)" },
-              { day: "Wednesday", time: "09:00 - 10:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab 1" },
-              { day: "Wednesday", time: "10:00 - 11:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Lab", room: "Biomaterial Lab 2" }
+              { day: "Saturday", time: "09:00 - 11:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.01" },
+              { day: "Saturday", time: "11:00 - 01:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall A3.10" },
+              { day: "Saturday", time: "03:00 - 05:00", subject: "Stem Cell Applications in Dentistry", code: "ELD104", type: "Lec", room: "Hall 3.02" },
+              { day: "Sunday", time: "09:00 - 11:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Lec", room: "Hall Comp.2" },
+              { day: "Sunday", time: "11:00 - 01:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab 1" },
+              { day: "Sunday", time: "01:00 - 03:00", subject: "Laser Applications in Dentistry", code: "ELD105", type: "Lec", room: "Hall 3.01" },
+              { day: "Monday", time: "09:00 - 10:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall Comp.1" },
+              { day: "Monday", time: "02:00 - 03:00", subject: "Dental Terminology", code: "DEN113", type: "Lec", room: "Hall 3.02" },
+              { day: "Tuesday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Hall 3.01" },
+              { day: "Tuesday", time: "11:00 - 01:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lec", room: "Hall 3.02" },
+              { day: "Tuesday", time: "01:00 - 03:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lab", room: "Hall 3.02" },
+              { day: "Wednesday", time: "09:00 - 11:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Biomaterial Lab2", room: "Biomaterial Lab2" }
             ],
             B4: [
-              { day: "Saturday", time: "13:00 - 15:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall A3.10 (with B5)" },
-              { day: "Monday", time: "11:00 - 12:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Dent. Lab 2" },
-              { day: "Tuesday", time: "13:00 - 14:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall A3.10" },
-              { day: "Wednesday", time: "11:00 - 12:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Lab", room: "Biomaterial Lab 2" }
+              { day: "Saturday", time: "09:00 - 11:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.01" },
+              { day: "Saturday", time: "02:00 - 05:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall A3.10" },
+              { day: "Saturday", time: "03:00 - 05:00", subject: "Stem Cell Applications in Dentistry", code: "ELD104", type: "Lec", room: "Hall 3.02" },
+              { day: "Sunday", time: "09:00 - 11:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Lec", room: "Hall Comp.2" },
+              { day: "Sunday", time: "11:00 - 01:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab2" },
+              { day: "Sunday", time: "01:00 - 03:00", subject: "Laser Applications in Dentistry", code: "ELD105", type: "Lec", room: "Hall 3.01" },
+              { day: "Monday", time: "09:00 - 10:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall Comp.1" },
+              { day: "Monday", time: "02:00 - 03:00", subject: "Dental Terminology", code: "DEN113", type: "Lec", room: "Hall 3.02" },
+              { day: "Tuesday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Hall 3.01" },
+              { day: "Tuesday", time: "11:00 - 01:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lec", room: "Hall 3.02" },
+              { day: "Tuesday", time: "01:00 - 03:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lab", room: "Hall 3.02" },
+              { day: "Wednesday", time: "01:00 - 03:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Biomaterial Lab 2", room: "Biomaterial Lab 2" }
             ],
             B5: [
-              { day: "Saturday", time: "13:00 - 15:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall A3.10 (with B4)" },
-              { day: "Monday", time: "14:00 - 15:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Dent. Lab 2" },
-              { day: "Tuesday", time: "13:00 - 14:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Lab", room: "Biomaterial Lab 2" },
-              { day: "Wednesday", time: "11:00 - 12:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Digital Lib. (with B1)" }
+              { day: "Saturday", time: "09:00 - 11:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall 3.01" },
+              { day: "Saturday", time: "02:00 - 05:00", subject: "General Anatomy for Dental Students", code: "BMS111", type: "Lec", room: "Hall A3.10" },
+              { day: "Saturday", time: "03:00 - 05:00", subject: "Stem Cell Applications in Dentistry", code: "ELD104", type: "Lec", room: "Hall 3.02" },
+              { day: "Sunday", time: "09:00 - 11:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Lec", room: "Hall Comp.2" },
+              { day: "Sunday", time: "01:00 - 03:00", subject: "Laser Applications in Dentistry", code: "ELD105", type: "Lec", room: "Hall 3.01" },
+              { day: "Monday", time: "09:00 - 10:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lec", room: "Hall Comp.1" },
+              { day: "Monday", time: "11:00 - 01:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lab", room: "Dent. Lab2" },
+              { day: "Monday", time: "01:00 - 02:00", subject: "Dental Biomaterial 1", code: "DEN112", type: "Biomaterial Lab 2", room: "Biomaterial Lab 2" },
+              { day: "Monday", time: "02:00 - 03:00", subject: "Dental Terminology", code: "DEN113", type: "Lec", room: "Hall 3.02" },
+              { day: "Tuesday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 1", code: "DEN111", type: "Lec", room: "Hall 3.01" },
+              { day: "Tuesday", time: "11:00 - 01:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lec", room: "Hall 3.02" },
+              { day: "Tuesday", time: "01:00 - 03:00", subject: "General Histology for Dental Students", code: "BMS112", type: "Lab", room: "Hall 3.02" },
+              { day: "Wednesday", time: "01:00 - 03:00", subject: "Biochemistry for Dental Students", code: "BMS114", type: "Lab", room: "Digital Lib." }
             ]
           }
         },
-
         C: {
           label: "Group C",
-          general: [
-            { day: "Sunday", time: "10:00 - 11:00", subject: "Head & Neck Anatomy for Dental Students", code: "BMS121", type: "Lec", room: "Hall A3.10" },
-            { day: "Sunday", time: "11:00 - 13:00", subject: "Head & Neck Anatomy for Dental Students", code: "BMS121", type: "Lab", room: "Hall A3.10" },
-            { day: "Monday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 2", code: "DEN121", type: "Lab", room: "Dent. Lab 1" },
-            { day: "Tuesday", time: "11:00 - 12:00", subject: "Dental Biomaterial 2", code: "DEN122", type: "Lec", room: "Digital Library" },
-            { day: "Tuesday", time: "13:00 - 14:00", subject: "Dental Anatomy and Occlusion 2", code: "DEN121", type: "Lec", room: "Hall Comp.1" },
-            { day: "Tuesday", time: "16:00 - 17:00", subject: "Dental Biomaterial 2", code: "DEN122", type: "Lab", room: "Biomaterial Lab 2" },
-            { day: "Wednesday", time: "09:00 - 10:00", subject: "Biophysics for Dental Students", code: "BBS121", type: "Lec", room: "Hall 3.07" },
-            { day: "Wednesday", time: "13:00 - 15:00", subject: "Biophysics for Dental Students", code: "BBS121", type: "Lec / Lab", room: "Biomaterial Lab 2" },
-            { day: "Thursday", time: "13:00 - 15:00", subject: "General Pathology for Dental Students", code: "BMS123", type: "Lec", room: "Hall Comp.1" },
-            { day: "Thursday", time: "15:00 - 17:00", subject: "General Pathology for Dental Students", code: "BMS123", type: "Lab", room: "Hall Comp.1" }
-          ],
-          sections: {}
+          sections: {
+            General: [
+              { day: "Sunday", time: "09:00 - 11:00", subject: "Head & Neck Anatomy for Dental Students", code: "BMS121", type: "Lec", room: "Hall A3.10" },
+              { day: "Sunday", time: "01:00 - 03:00", subject: "Dental Biomaterial 2", code: "DEN122", type: "Lec", room: "Digital Library" },
+              { day: "Monday", time: "09:00 - 11:00", subject: "Dental Anatomy and Occlusion 2", code: "DEN121", type: "Lab", room: "Dent. Lab1" },
+              { day: "Monday", time: "01:00 - 03:00", subject: "Dental Anatomy and Occlusion 2", code: "DEN121", type: "Lec", room: "Hall Comp.1" },
+              { day: "Tuesday", time: "09:00 - 11:00", subject: "Dental Biomaterial 2", code: "DEN122", type: "Lab", room: "Biomaterial Lab 2" },
+              { day: "Wednesday", time: "09:00 - 11:00", subject: "Biophysics for Dental Students", code: "BBS121", type: "Lec", room: "Hall 3.07" },
+              { day: "Wednesday", time: "11:00 - 01:00", subject: "Biophysics for Dental Students", code: "BBS121", type: "Lab", room: "Biomaterial Lab 2" }
+            ]
+          }
         }
       };
 
-      const dayOrder = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
-
-      const state = {
-        group: null,
-        section: null
-      };
-
+      const state = { group: null, section: null };
       const screens = {
         home: document.getElementById("homePage"),
         section: document.getElementById("sectionPage"),
@@ -479,24 +570,26 @@
       const sectionTitle = document.getElementById("sectionTitle");
       const timetableTitle = document.getElementById("timetableTitle");
       const timetableContainer = document.getElementById("timetableContainer");
+      const progressLabel = document.getElementById("progressLabel");
+      const progressFill = document.getElementById("progressFill");
 
       function showScreen(name) {
-        Object.keys(screens).forEach(key => {
-          screens[key].classList.toggle("active", key === name);
-        });
+        Object.keys(screens).forEach(key => screens[key].classList.toggle("active", key === name));
       }
 
       function renderGroups() {
         groupGrid.innerHTML = "";
+
         Object.entries(timetableData).forEach(([key, value]) => {
           const card = document.createElement("button");
-          card.className = "group-card";
           card.type = "button";
+          card.className = "group-card";
           card.innerHTML = `
             <div class="group-icon">${key}</div>
             <h3>${value.label}</h3>
-            <p>${value.sections && Object.keys(value.sections).length ? "Choose section" : "General timetable"}</p>
+            <p>${value.sections && Object.keys(value.sections).length ? "Choose section" : "Open timetable"}</p>
           `;
+
           card.addEventListener("click", () => {
             state.group = key;
             state.section = null;
@@ -510,41 +603,53 @@
               showScreen("timetable");
             }
           });
+
           groupGrid.appendChild(card);
         });
       }
 
       function renderSections() {
         const group = timetableData[state.group];
+        const keys = Object.keys(group.sections || {});
+
         sectionTitle.textContent = `${group.label} — Choose a section`;
         sectionGrid.innerHTML = "";
 
-        const sectionKeys = Object.keys(group.sections || {});
-        if (!sectionKeys.length) {
-          sectionGrid.innerHTML = "<p>No sections available for this group.</p>";
-          return;
-        }
-
-        sectionKeys.forEach(key => {
-          const card = document.createElement("button");
-          card.className = "section-card";
-          card.type = "button";
-          card.innerHTML = `
-            <div class="section-number">${key.replace("A","").replace("B","")}</div>
+        keys.forEach((key) => {
+          const sectionBtn = document.createElement("button");
+          sectionBtn.type = "button";
+          sectionBtn.className = "section-card";
+          sectionBtn.innerHTML = `
+            <div class="section-number">${key.replace(/[^0-9]/g, "") || "G"}</div>
             <h3>${key}</h3>
             <p>Open timetable</p>
           `;
-          card.addEventListener("click", () => {
+
+          sectionBtn.addEventListener("click", () => {
             state.section = key;
             renderTimetable();
             showScreen("timetable");
           });
-          sectionGrid.appendChild(card);
+
+          sectionGrid.appendChild(sectionBtn);
         });
       }
 
-      function parseTimeRange(value) {
-        const match = value.match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+      function getSelectedSchedule() {
+        const group = timetableData[state.group];
+        if (!group) return [];
+
+        const base = group.sections ? (group.sections[state.section] || []) : [];
+        return base;
+      }
+
+      function getLectureId(item) {
+        return `${state.group}-${state.section || "General"}-${item.day}-${item.time}-${item.subject}-${item.room}`;
+      }
+
+      function parseTime(value) {
+        const regex = /(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/i;
+        const match = value.match(regex);
         if (!match) return Number.MAX_SAFE_INTEGER;
 
         const start = Number(match[1]) + Number(match[2]) / 60;
@@ -552,107 +657,110 @@
         return { start, end };
       }
 
-      function getCombinedSchedule() {
-        const group = timetableData[state.group];
-        const general = group.general || [];
-        const sectionEntries = group.sections && state.section ? (group.sections[state.section] || []) : [];
-        return [...general, ...sectionEntries].sort((a, b) => {
-          const dayDiff = dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day);
-          if (dayDiff !== 0) return dayDiff;
-
-          const aTime = parseTimeRange(a.time);
-          const bTime = parseTimeRange(b.time);
-          return aTime.start - bTime.start;
-        });
-      }
-
       function renderTimetable() {
         const group = timetableData[state.group];
-        const selectedKey = state.section || "General";
-        timetableTitle.textContent = `${group.label} ${selectedKey}`;
+        const sectionKey = state.section || "General";
+        const lectures = getSelectedSchedule();
 
-        const schedule = getCombinedSchedule();
-        const grouped = {};
-
-        schedule.forEach(item => {
-          if (!grouped[item.day]) grouped[item.day] = [];
-          grouped[item.day].push(item);
-        });
-
+        timetableTitle.textContent = `${group.label} ${sectionKey}`;
         timetableContainer.innerHTML = "";
 
-        dayOrder.forEach(day => {
-          if (!grouped[day] || !grouped[day].length) return;
+        const byDay = {};
+        lectures.forEach((lecture) => {
+          if (!byDay[lecture.day]) byDay[lecture.day] = [];
+          byDay[lecture.day].push(lecture);
+        });
+
+        let totalLectures = 0;
+        Object.values(byDay).forEach(list => totalLectures += list.length);
+
+        let checkedCount = 0;
+        const storage = JSON.parse(localStorage.getItem("dentalRenadProgress") || "{}");
+
+        dayOrder.forEach((day) => {
+          if (!byDay[day] || !byDay[day].length) return;
 
           const dayBlock = document.createElement("div");
           dayBlock.className = "day-block";
 
           const title = document.createElement("h3");
           title.className = "day-title";
-          title.textContent = `${day} / ${getArabicDay(day)}`;
+          title.textContent = day;
           dayBlock.appendChild(title);
 
           const list = document.createElement("div");
           list.className = "lec-list";
 
-          grouped[day].forEach(lecture => {
-            const item = document.createElement("div");
-            item.className = "lec-item";
+          byDay[day]
+            .slice()
+            .sort((a, b) => parseTime(a.time).start - parseTime(b.time).start)
+            .forEach((lecture) => {
+              totalLectures += 0;
+              const item = document.createElement("div");
+              item.className = "lec-item";
 
-            const time = document.createElement("div");
-            time.className = "time";
-            time.textContent = lecture.time;
-            item.appendChild(time);
+              const lectureId = getLectureId(lecture);
+              const checked = Boolean(storage[lectureId]);
+              if (checked) checkedCount += 1;
 
-            const courseBox = document.createElement("div");
-            courseBox.className = "course-box";
-            courseBox.innerHTML = `
-              <div class="course-name">${lecture.subject} (${lecture.code})</div>
-              <div class="course-meta">
-                ${lecture.type} • ${lecture.room}
-              </div>
-            `;
-            item.appendChild(courseBox);
+              const time = document.createElement("div");
+              time.className = "time";
+              time.textContent = lecture.time;
+              item.appendChild(time);
 
-            const checkWrap = document.createElement("div");
-            checkWrap.className = "check-box-wrap";
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.setAttribute("aria-label", lecture.subject);
-            checkbox.dataset.key = getLectureId(lecture);
-            const saved = JSON.parse(localStorage.getItem("timetableChecks") || "{}");
-            checkbox.checked = Boolean(saved[checkbox.dataset.key]);
-            checkbox.addEventListener("change", function () {
-              const storage = JSON.parse(localStorage.getItem("timetableChecks") || "{}");
-              if (this.checked) storage[this.dataset.key] = true;
-              else delete storage[this.dataset.key];
-              localStorage.setItem("timetableChecks", JSON.stringify(storage));
+              const courseBox = document.createElement("div");
+              courseBox.innerHTML = `
+                <div class="course-name">${lecture.subject} (${lecture.code})</div>
+                <div class="course-meta">${lecture.type} • ${lecture.room}</div>
+              `;
+              item.appendChild(courseBox);
+
+              const checkWrap = document.createElement("div");
+              checkWrap.className = "check-box-wrap";
+              const checkbox = document.createElement("input");
+              checkbox.type = "checkbox";
+              checkbox.checked = checked;
+              checkbox.setAttribute("aria-label", lecture.subject);
+              checkbox.addEventListener("change", () => {
+                const saved = JSON.parse(localStorage.getItem("dentalRenadProgress") || "{}");
+                if (checkbox.checked) saved[lectureId] = true; else delete saved[lectureId];
+                localStorage.setItem("dentalRenadProgress", JSON.stringify(saved));
+                updateProgress();
+                item.classList.toggle("done", checkbox.checked);
+              });
+
+              if (checked) item.classList.add("done");
+
+              checkWrap.appendChild(checkbox);
+              item.appendChild(checkWrap);
+              list.appendChild(item);
             });
-            checkWrap.appendChild(checkbox);
-            item.appendChild(checkWrap);
-
-            list.appendChild(item);
-          });
 
           dayBlock.appendChild(list);
           timetableContainer.appendChild(dayBlock);
         });
+
+        updateProgress();
       }
 
-      function getLectureId(lecture) {
-        return `${state.group}-${state.section || "General"}-${lecture.day}-${lecture.time}-${lecture.subject}-${lecture.room}`;
-      }
+      function updateProgress() {
+        const group = timetableData[state.group];
+        if (!group) return;
 
-      function getArabicDay(day) {
-        const map = {
-          Saturday: "السبت",
-          Sunday: "الأحد",
-          Monday: "الإثنين",
-          Tuesday: "الثلاثاء",
-          Wednesday: "الأربعاء",
-          Thursday: "الخميس"
-        };
-        return map[day] || day;
+        const lectures = getSelectedSchedule();
+        const storage = JSON.parse(localStorage.getItem("dentalRenadProgress") || "{}");
+        let checkedCount = 0;
+
+        lectures.forEach((lecture) => {
+          const key = getLectureId(lecture);
+          if (storage[key]) checkedCount += 1;
+        });
+
+        const total = lectures.length || 0;
+        const percent = total ? Math.round((checkedCount / total) * 100) : 0;
+
+        progressLabel.textContent = `${percent}%`;
+        progressFill.style.width = `${percent}%`;
       }
 
       document.getElementById("backToGroupsBtn").addEventListener("click", () => {
